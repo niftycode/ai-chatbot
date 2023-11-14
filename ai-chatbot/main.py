@@ -58,6 +58,8 @@ class MainWindow():
         self.chat_button.grid(column=0, row=3, columnspan=1, rowspan=1, sticky="w")
         self.quit_button.grid(column=2, row=3, columnspan=1, rowspan=1, sticky="e")
 
+        # Note: We don't need columnconfigure(0, weight=1) or rowconfigure(0, weight=1)
+        # because window.resizable is set to False.
     def send_message(self) -> None:
         """
         Get input from the user, fetch answers and show them in a text field.
