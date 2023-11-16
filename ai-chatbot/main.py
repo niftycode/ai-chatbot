@@ -5,10 +5,11 @@ Tkinter GUI
 Version: 1.0
 Python 3.12
 Date created: November 8th, 2023
-Date modified: November 14th, 2023
+Date modified: November 15th, 2023
 """
 
 import tkinter as tk
+import sys
 import setup_ai as chatbot
 
 from tkinter import ttk
@@ -47,9 +48,8 @@ class MainWindow():
         self.input_field = ttk.Entry(self.content)
         # self.input_field.pack()
 
-        self.chat_button = ttk.Button(self.content, text="Chat", command=lambda: self.send_message())
-        self.quit_button = ttk.Button(self.content, text="Quit", command=lambda: self.quit_program())
-        # self.send_button.pack()
+        self.chat_button = ttk.Button(self.content, text="Chat", command=self.send_message)
+        self.quit_button = ttk.Button(self.content, text="Quit", command=self.quit_program)
 
         # Define a grid (3 columns, 3 rows)
         self.content.grid(column=0, row=0, sticky="nsew")
@@ -62,7 +62,7 @@ class MainWindow():
         # because window.resizable is set to False.
     def send_message(self) -> None:
         """
-        Get input from the user, fetch answers and show them in a text field.
+        Get input from user, fetch answers and show them in a text field.
         """
 
         # Get input and delete the input field
@@ -71,7 +71,7 @@ class MainWindow():
 
         # Show the input in the text field
         self.text_area.insert("end", f"You: {user_input}\n")
-        self.text_area.insert("end", "\n")  # Leerzeile für bessere Lesbarkeit
+        self.text_area.insert("end", "\n")
         chatbot.collect_input(user_input)
 
         # Fetch the answer
@@ -80,7 +80,10 @@ class MainWindow():
 
         # Show the answer in the text field
         self.text_area.insert("end", f"Chatbot: {response}\n")
-        self.text_area.insert("end", "\n \n")  # Zwei Leerzeilen für bessere Lesbarkeit
+        self.text_area.insert("end", "\n \n")
+
+    def quit_program(self):
+        sys.exit()
 
     def mainloop(self):
         self.window.mainloop()
