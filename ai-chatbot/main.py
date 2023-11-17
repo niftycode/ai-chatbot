@@ -1,24 +1,32 @@
 #!/usr/bin/env python3
 
 """
-Tkinter GUI
-Version: 1.0
+This program is inspired by an article from heise.de:
+https://www.heise.de/ratgeber/Python-Eigene-KI-Programmierhilfe-entwickeln-9330993.html
+
+In contrast to the code in the article, the new API (> 1.0.0) is used here.
+
+Version: 2.0
 Python 3.12
 Date created: November 8th, 2023
-Date modified: November 15th, 2023
+Date modified: November 17th, 2023
 """
 
 import tkinter as tk
 import sys
+import logging
 import setup_ai as chatbot
 
 from tkinter import ttk
+
+# logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 
 class MainWindow():
     def __init__(self):
         self.window = tk.Tk()
-        self.window.title("AI Chatbot")
+        self.window.title("AI Chatbot (Python)")
 
         window_width = 600
         window_height = 400
@@ -77,6 +85,8 @@ class MainWindow():
         # Fetch the answer
         response = chatbot.get_completion_from_messages(chatbot.context)
         chatbot.collect_responses(response)
+
+        logging.debug(response)
 
         # Show the answer in the text field
         self.text_area.insert("end", f"Chatbot: {response}\n")

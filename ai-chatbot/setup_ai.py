@@ -1,22 +1,24 @@
 #!/usr/bin/env python3
 
 """
-Description goes here...
-Version: 1.0
+This program is inspired by an article from heise.de:
+https://www.heise.de/ratgeber/Python-Eigene-KI-Programmierhilfe-entwickeln-9330993.html
+
+In contrast to the code in the article, the new API (> 1.0.0) is used here.
+
+Version: 2.0
 Python 3.11
 Date created: October 18th, 2023
-Date modified: November 10th, 2023
+Date modified: November 17th, 2023
 """
 
-import openai
-import io
 import logging
 
 from os.path import expanduser
+from openai import OpenAI
 
 
-logging.basicConfig(level=logging.DEBUG)
-# logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO)
 
 api_file_path = expanduser("~") + "/Documents/API/openai-api-file.bin"
 
@@ -26,8 +28,10 @@ with open(api_file_path, encoding="utf-8") as binary_file:
 
 logging.debug(str(api_key))
 
-'''
-prompt = "Can you write a function in Python to perform the addition of two numbers?"
+# new API (since 1.0.0)
+client = OpenAI(
+  api_key=api_key,
+)
 
 context = [
     {
@@ -56,10 +60,9 @@ def collect_responses(response):
 
 
 def get_completion_from_messages(messages, model="gpt-3.5-turbo", temperature=0):
-    response = openai.ChatCompletion.create(
-        model=model,
-        messages=messages,
-        temperature=temperature,  # Differenziertheit der Antwort (1 = hoch)
-    )
-    return response.choices[0].message["content"]  # type: ignore
-'''
+    response = client.chat.completions.create(model=model,
+                                              messages=messages,
+                                              temperature=temperature)
+
+    logging.debug(response.choices[0].message.content)
+    return response.choices[0].message.content
