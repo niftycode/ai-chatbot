@@ -13,7 +13,6 @@ Date modified: November 17th, 2023
 """
 
 import tkinter as tk
-import sys
 import logging
 import setup_ai as chatbot
 
@@ -24,8 +23,8 @@ logging.basicConfig(level=logging.INFO)
 
 
 class MainWindow():
-    def __init__(self):
-        self.window = tk.Tk()
+    def __init__(self, window):
+        self.window = window
         self.window.title("AI Chatbot (Python)")
 
         window_width = 600
@@ -93,7 +92,7 @@ class MainWindow():
         self.text_area.insert("end", "\n \n")
 
     def quit_program(self):
-        sys.exit()
+        self.window.destroy()
 
     def mainloop(self):
         self.window.mainloop()
@@ -102,5 +101,6 @@ class MainWindow():
 
 
 if __name__ == "__main__":
-    main_window = MainWindow()
+    window = tk.Tk()
+    main_window = MainWindow(window)
     main_window.mainloop()
