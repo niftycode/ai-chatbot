@@ -22,7 +22,7 @@ from tkinter import ttk
 logging.basicConfig(level=logging.INFO)
 
 
-class MainWindow():
+class MainWindow:
     def __init__(self, window):
         self.window = window
         self.window.title("AI Chatbot (Python)")
