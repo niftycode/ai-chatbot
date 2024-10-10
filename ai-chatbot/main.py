@@ -7,7 +7,7 @@ https://www.heise.de/ratgeber/Python-Eigene-KI-Programmierhilfe-entwickeln-93309
 In contrast to the code in the article, the new API (> 1.0.0) is used here.
 
 Version: 2.0
-Python 3.12
+Python 3.11+
 Date created: November 8th, 2023
 Date modified: November 17th, 2023
 """
@@ -23,12 +23,12 @@ logging.basicConfig(level=logging.INFO)
 
 
 class MainWindow:
-    def __init__(self, window):
-        self.window = window
+    def __init__(self, app_window):
+        self.window = app_window
         self.window.title("AI Chatbot (Python)")
 
-        window_width = 600
-        window_height = 400
+        window_width = 1000
+        window_height = 800
 
         # Get the screen dimension
         screen_width = self.window.winfo_screenwidth()
@@ -55,8 +55,12 @@ class MainWindow:
         self.input_field = ttk.Entry(self.content)
         # self.input_field.pack()
 
-        self.chat_button = ttk.Button(self.content, text="Chat", command=self.send_message)
-        self.quit_button = ttk.Button(self.content, text="Quit", command=self.quit_program)
+        self.chat_button = ttk.Button(
+            self.content, text="Chat", command=self.send_message
+        )
+        self.quit_button = ttk.Button(
+            self.content, text="Quit", command=self.quit_program
+        )
 
         # Define a grid (3 columns, 3 rows)
         self.content.grid(column=0, row=0, sticky="nsew")
@@ -67,6 +71,7 @@ class MainWindow:
 
         # Note: We don't need columnconfigure(0, weight=1) or rowconfigure(0, weight=1)
         # because window.resizable is set to False.
+
     def send_message(self) -> None:
         """
         Get input from user, fetch answers and show them in a text field.
@@ -96,6 +101,7 @@ class MainWindow:
 
     def mainloop(self):
         self.window.mainloop()
+
 
 # input_field.bind_all("<Return>", send_message)
 

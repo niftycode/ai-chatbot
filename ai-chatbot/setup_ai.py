@@ -7,7 +7,7 @@ https://www.heise.de/ratgeber/Python-Eigene-KI-Programmierhilfe-entwickeln-93309
 In contrast to the code in the article, the new API (> 1.0.0) is used here.
 
 Version: 2.0
-Python 3.11
+Python 3.11+
 Date created: October 18th, 2023
 Date modified: November 17th, 2023
 """
@@ -30,7 +30,7 @@ logging.debug(str(api_key))
 
 # new API (since 1.0.0)
 client = OpenAI(
-  api_key=api_key,
+    api_key=api_key,
 )
 
 context = [
@@ -60,9 +60,9 @@ def collect_responses(response):
 
 
 def get_completion_from_messages(messages, model="gpt-3.5-turbo", temperature=0):
-    response = client.chat.completions.create(model=model,
-                                              messages=messages,
-                                              temperature=temperature)
+    response = client.chat.completions.create(
+        model=model, messages=messages, temperature=temperature
+    )
 
     logging.debug(response.choices[0].message.content)
     return response.choices[0].message.content
