@@ -9,7 +9,7 @@ In contrast to the code in the article, the new API (> 1.0.0) is used here.
 Version: 2.0
 Python 3.11+
 Date created: November 8th, 2023
-Date modified: November 17th, 2023
+Date modified: October 19th, 2024
 """
 
 import tkinter as tk
@@ -44,30 +44,44 @@ class MainWindow:
         # Window is resizable?
         self.window.resizable(True, True)
 
-        # Create a frame
-        self.content = ttk.Frame(self.window, padding=(10, 10, 10, 10))
+        # Create a frame for the Text widget
+        self.text_frame = ttk.Frame(self.window, padding=(10, 10, 10, 10))
+        self.text_frame.grid(row=0, column=0, sticky="nsew")
 
-        # Add widgets
-        self.text_area = tk.Text(self.content, bg="white")
+        # Add a Text widget to the frame
+        self.text_widget = tk.Text(self.text_frame)
+        self.text_widget.grid(row=0, column=0, sticky="nsew")
 
-        self.input_field = ttk.Entry(self.content)
+        # Create a frame for an input field
+        self.input_frame = ttk.Frame(window)
+        self.input_frame.grid(row=1, column=0, sticky="ew")
 
+        # Add entry widget to the input_frame
+        self.input_field = ttk.Entry(self.input_frame)
+        self.input_field.grid(row=0, column=0, sticky="ew", padx=10, pady=10)
+
+        # Create a frame for buttons
+        self.button_frame = ttk.Frame(window)
+        self.button_frame.grid(row=2, column=0, sticky="ew")
+
+        # Add buttons to the button_frame
         self.chat_button = ttk.Button(
-            self.content, text="Chat", command=self.send_message
+            self.button_frame, text="Chat", command=self.send_message
         )
+        self.chat_button.grid(row=0, column=0, sticky="w", padx=10, pady=10)
+
         self.quit_button = ttk.Button(
-            self.content, text="Quit", command=self.quit_program
+            self.button_frame, text="Quit", command=self.quit_program
         )
+        self.quit_button.grid(row=0, column=2, sticky="e", padx=10, pady=10)
 
-        # Define a grid (3 columns, 3 rows)
-        self.content.grid(column=0, row=0, sticky="nsew")
-        self.text_area.grid(column=0, row=1, columnspan=3, rowspan=1, sticky="nsew")
-        self.input_field.grid(column=0, row=2, columnspan=3, rowspan=1, sticky="ew")
-        self.chat_button.grid(column=0, row=3, columnspan=1, rowspan=1, sticky="w")
-        self.quit_button.grid(column=2, row=3, columnspan=1, rowspan=1, sticky="e")
-
-        # Note: We don't need columnconfigure(0, weight=1) or rowconfigure(0, weight=1)
-        # because window.resizable is set to False.
+        # Configure grid to ensure the Text widget and button_frame fill the window
+        self.window.grid_rowconfigure(0, weight=1)
+        self.window.grid_columnconfigure(0, weight=1)
+        self.text_frame.grid_rowconfigure(0, weight=1)
+        self.text_frame.grid_columnconfigure(0, weight=1)
+        self.input_frame.grid_columnconfigure(0, weight=1)
+        self.button_frame.grid_columnconfigure(1, weight=1)
 
     def send_message(self) -> None:
         """
@@ -79,8 +93,8 @@ class MainWindow:
         self.input_field.delete(0, "end")
 
         # Show the input in the text field
-        self.text_area.insert("end", f"You: {user_input}\n")
-        self.text_area.insert("end", "\n")
+        self.text_widget.insert("end", f"You: {user_input}\n")
+        self.text_widget.insert("end", "\n")
         chatbot.collect_input(user_input)
 
         # Fetch the answer
@@ -90,8 +104,8 @@ class MainWindow:
         logging.debug(response)
 
         # Show the answer in the text field
-        self.text_area.insert("end", f"Chatbot: {response}\n")
-        self.text_area.insert("end", "\n \n")
+        self.text_widget.insert("end", f"Chatbot: {response}\n")
+        self.text_widget.insert("end", "\n \n")
 
     def quit_program(self):
         self.window.destroy()
