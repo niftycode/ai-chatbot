@@ -27,8 +27,8 @@ class MainWindow:
         self.window = app_window
         self.window.title("AI Chatbot (Python)")
 
-        window_width = 1000
-        window_height = 800
+        window_width = 800
+        window_height = 600
 
         # Get the screen dimension
         screen_width = self.window.winfo_screenwidth()
@@ -41,19 +41,16 @@ class MainWindow:
         # Set the position of the window to the center of the screen
         self.window.geometry(f"{window_width}x{window_height}+{center_x}+{center_y}")
 
-        # Window is not resizable
-        self.window.resizable(False, False)
+        # Window is resizable?
+        self.window.resizable(True, True)
 
         # Create a frame
-        # All widgets will be part of this frame.
         self.content = ttk.Frame(self.window, padding=(10, 10, 10, 10))
 
         # Add widgets
         self.text_area = tk.Text(self.content, bg="white")
-        # self.text_area.pack()
 
         self.input_field = ttk.Entry(self.content)
-        # self.input_field.pack()
 
         self.chat_button = ttk.Button(
             self.content, text="Chat", command=self.send_message
