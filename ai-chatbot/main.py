@@ -6,7 +6,7 @@ https://www.heise.de/ratgeber/Python-Eigene-KI-Programmierhilfe-entwickeln-93309
 
 In contrast to the code in the article, the new API (> 1.0.0) is used here.
 
-Version: 2.0
+Version: 3.0
 Python 3.11+
 Date created: November 8th, 2023
 Date modified: October 19th, 2024
