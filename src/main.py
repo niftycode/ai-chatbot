@@ -26,6 +26,7 @@ class MainWindow:
     def __init__(self, app_window):
         self.window = app_window
         self.window.title("AI Chatbot (Python)")
+        self.window.lift()
 
         window_width = 800
         window_height = 600

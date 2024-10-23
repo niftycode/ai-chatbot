@@ -52,6 +52,7 @@ app = BUNDLE(
                 'LSItemContentTypes': ['com.niftycode.pythonbot'],
                 'LSHandlerRank': 'Owner'
             }
-        ]
+        ],
+        'CFBundleShortVersionString': '0.1.0'
     },
 )
