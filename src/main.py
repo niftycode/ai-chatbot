@@ -9,13 +9,13 @@ In contrast to the code in the article, the new API (> 1.0.0) is used here.
 Version: 3.0
 Python 3.11+
 Date created: November 8th, 2023
-Date modified: October 19th, 2024
+Date modified: October 23rdth, 2024
 """
 
 import tkinter as tk
 import logging
-import setup_ai as chatbot
 
+from src import setup_ai
 from tkinter import ttk
 
 # logging.basicConfig(level=logging.DEBUG)
@@ -95,11 +95,11 @@ class MainWindow:
         # Show the input in the text field
         self.text_widget.insert("end", f"You: {user_input}\n")
         self.text_widget.insert("end", "\n")
-        chatbot.collect_input(user_input)
+        setup_ai.collect_input(user_input)
 
         # Fetch the answer
-        response = chatbot.get_completion_from_messages(chatbot.context)
-        chatbot.collect_responses(response)
+        response = setup_ai.get_completion_from_messages(setup_ai.context)
+        setup_ai.collect_responses(response)
 
         logging.debug(response)
 
