@@ -35,12 +35,12 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['app-icon.icns'],
+    icon=['assets/app-icon.icns'],
 )
 app = BUNDLE(
     exe,
     name='PythonBot.app',
-    icon='app-icon.icns',
+    icon='assets/app-icon.icns',
     bundle_identifier='de.nicefield',
     info_plist={
         'NSPrincipalClass': 'NSApplication',
@@ -53,6 +53,6 @@ app = BUNDLE(
                 'LSHandlerRank': 'Owner'
             }
         ],
-        'CFBundleShortVersionString': '0.1.0'
+        'CFBundleShortVersionString': '0.1.1'
     },
 )
