@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 
 """
-This program is inspired by an article from heise.de:
+This program is inspired by an article from heise.de (german language):
 https://www.heise.de/ratgeber/Python-Eigene-KI-Programmierhilfe-entwickeln-9330993.html
 
 In contrast to the code in the article, the new API (> 1.0.0) is used here.
 
 Version: 3.0
-Python 3.11+
+Python 3.12+
 Date created: November 8th, 2023
-Date modified: October 23rdth, 2024
+Date modified: November 14th, 2024
 """
 
 import tkinter as tk
@@ -50,7 +50,7 @@ class MainWindow:
         self.text_frame.grid(row=0, column=0, sticky="nsew")
 
         # Add a Text widget to the frame
-        self.text_widget = tk.Text(self.text_frame)
+        self.text_widget = tk.Text(self.text_frame, height=15, font=("Helvetica", 16))
         self.text_widget.grid(row=0, column=0, sticky="nsew")
 
         # Create a frame for an input field
@@ -113,9 +113,6 @@ class MainWindow:
 
     def mainloop(self):
         self.window.mainloop()
-
-
-# input_field.bind_all("<Return>", send_message)
 
 
 if __name__ == "__main__":

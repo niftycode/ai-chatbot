@@ -1,11 +1,6 @@
 #!/usr/bin/env python3
 
 """
-This program is inspired by an article from heise.de:
-https://www.heise.de/ratgeber/Python-Eigene-KI-Programmierhilfe-entwickeln-9330993.html
-
-In contrast to the code in the article, the new API (> 1.0.0) is used here.
-
 Version: 2.0
 Python 3.11+
 Date created: October 18th, 2023

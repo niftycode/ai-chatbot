@@ -41,7 +41,7 @@ app = BUNDLE(
     exe,
     name='PythonBot.app',
     icon='assets/app-icon.icns',
-    bundle_identifier='de.nicefield',
+    bundle_identifier='de.niftycode',
     info_plist={
         'NSPrincipalClass': 'NSApplication',
         'NSAppleScriptEnabled': False,
