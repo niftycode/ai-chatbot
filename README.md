@@ -51,4 +51,9 @@ This deviates from the suggestion shown [on Github](https://github.com/openai/op
 
 ## Additional Notes
 
-This repository contains a spec file that allows you to create an executable with [PyInstaller](https://pyinstaller.org/en/stable/).
+This repository contains a spec file that allows you to create an executable with [PyInstaller](https://pyinstaller.org/en/stable/). The prerequisite is that the PyInstaller package was installed with `pip`:
+
+```Bash
+pip3 install pyinstaller
+```
+
