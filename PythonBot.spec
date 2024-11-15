@@ -53,6 +53,6 @@ app = BUNDLE(
                 'LSHandlerRank': 'Owner'
             }
         ],
-        'CFBundleShortVersionString': '0.1.1'
+        'CFBundleShortVersionString': '0.1.2'
     },
 )

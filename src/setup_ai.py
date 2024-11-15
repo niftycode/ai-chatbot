@@ -2,31 +2,41 @@
 
 """
 Version: 2.0
-Python 3.11+
+Python 3.12+
 Date created: October 18th, 2023
-Date modified: November 17th, 2023
+Date modified: November 15th, 2024
 """
 
 import logging
+import os
 
 from os.path import expanduser
 from openai import OpenAI
 
+from src import error_window
 
 logging.basicConfig(level=logging.INFO)
 
 api_file_path = expanduser("~") + "/Documents/API/openai-api-file.bin"
 
-with open(api_file_path, encoding="utf-8") as binary_file:
-    # Read the whole file at once
-    api_key = binary_file.read()
-
-logging.debug(str(api_key))
+if os.path.isfile(api_file_path):
+    logging.debug(f"The file '{api_file_path}' exists and is readable.")
+    try:
+        with open(api_file_path, encoding="utf-8") as binary_file:
+            api_key = binary_file.read()
+    except FileNotFoundError as ex:
+        print(ex)
+else:
+    error_window.show_error(f"Can't find API file!\n({api_file_path})")
 
 # new API (since 1.0.0)
-client = OpenAI(
-    api_key=api_key,
-)
+try:
+    client = OpenAI(
+        api_key=api_key,
+    )
+except Exception as ex:
+    print(ex)
+    print("Can't find API key file!")
 
 context = [
     {
