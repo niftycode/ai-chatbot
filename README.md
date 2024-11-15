@@ -39,9 +39,9 @@ This deviates from the suggestion shown [on Github](https://github.com/openai/op
 
 ## Operating System
 
-* **macOS**
-* Linux not tested
-* Windows not tested
+* macOS
+* Linux
+* Windows (not tested, but should work too)
 
 ## Requirements
 
