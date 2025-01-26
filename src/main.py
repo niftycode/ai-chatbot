@@ -9,7 +9,7 @@ In contrast to the code in the article, the new API (> 1.0.0) is used here.
 Version: 3.0
 Python 3.12+
 Date created: November 8th, 2023
-Date modified: November 14th, 2024
+Date modified: January 26th, 2025
 """
 
 import tkinter as tk
@@ -18,8 +18,8 @@ import logging
 from src import setup_ai
 from tkinter import ttk
 
-logging.basicConfig(level=logging.DEBUG)
-# logging.basicConfig(level=logging.INFO)
+# logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 
 class MainWindow:
@@ -61,8 +61,8 @@ class MainWindow:
         self.input_field = ttk.Entry(
             self.input_frame, foreground="blue", background="white"
         )
+        self.input_field.bind("<Return>", lambda event: self.send_message())
         self.input_field.grid(row=0, column=0, sticky="ew", padx=10, pady=10)
-        self.input_field.bind("<Return>", self.on_shortcut)
 
         # Create a frame for buttons
         self.button_frame = ttk.Frame(window)
@@ -86,9 +86,6 @@ class MainWindow:
         self.text_frame.grid_columnconfigure(0, weight=1)
         self.input_frame.grid_columnconfigure(0, weight=1)
         self.button_frame.grid_columnconfigure(1, weight=1)
-
-    def on_shortcut(self, event):
-        logging.debug("Enter key pressed")
 
     def send_message(self) -> None:
         """
