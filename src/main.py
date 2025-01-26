@@ -18,8 +18,8 @@ import logging
 from src import setup_ai
 from tkinter import ttk
 
-# logging.basicConfig(level=logging.DEBUG)
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
+# logging.basicConfig(level=logging.INFO)
 
 
 class MainWindow:
@@ -58,8 +58,11 @@ class MainWindow:
         self.input_frame.grid(row=1, column=0, sticky="ew")
 
         # Add entry widget to the input_frame
-        self.input_field = ttk.Entry(self.input_frame)
+        self.input_field = ttk.Entry(
+            self.input_frame, foreground="blue", background="white"
+        )
         self.input_field.grid(row=0, column=0, sticky="ew", padx=10, pady=10)
+        self.input_field.bind("<Return>", self.on_shortcut)
 
         # Create a frame for buttons
         self.button_frame = ttk.Frame(window)
@@ -83,6 +86,9 @@ class MainWindow:
         self.text_frame.grid_columnconfigure(0, weight=1)
         self.input_frame.grid_columnconfigure(0, weight=1)
         self.button_frame.grid_columnconfigure(1, weight=1)
+
+    def on_shortcut(self, event):
+        logging.debug("Enter key pressed")
 
     def send_message(self) -> None:
         """
