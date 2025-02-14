@@ -1,5 +1,11 @@
 # ai-chatbot
 
+![Static Badge](https://img.shields.io/badge/python-3.12-blue)
+![Static Badge](https://img.shields.io/badge/python-3.13-blue)
+![GitHub License](https://img.shields.io/github/license/niftycode/ai-chatbot)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/niftycode/ai-chatbot)
+
 This chatbot is using the OpenAI API to fetch **Python** related answers.
 
 The program is inspired by an article from [heise.de](https://www.heise.de/ratgeber/Python-Eigene-KI-Programmierhilfe-entwickeln-9330993.html). In contrast to the code in the article, the new API (> 1.0.0) is used here.
@@ -47,11 +53,11 @@ This deviates from the suggestion shown [on Github](https://github.com/openai/op
 
 * Python >= 3.12
 * openai >= 1.0.0
-* OpenAI Api Key
+* OpenAI API Key
 
 ## Additional Notes
 
-This repository contains a spec file that allows you to create an executable with [PyInstaller](https://pyinstaller.org/en/stable/). The prerequisite is that the PyInstaller package was installed with `pip`:
+This repository contains a spec file that allows you to create an executable with [PyInstaller](https://pyinstaller.org/en/stable/). This requires `pyinstaller` to be installed:
 
 ```Bash
 pip3 install pyinstaller
