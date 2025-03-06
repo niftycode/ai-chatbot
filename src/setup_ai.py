@@ -4,7 +4,7 @@
 Version: 2.0
 Python 3.12+
 Date created: October 18th, 2023
-Date modified: November 15th, 2024
+Date modified: March 4th, 2025
 """
 
 import logging
