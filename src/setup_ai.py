@@ -29,7 +29,7 @@ if os.path.isfile(api_file_path):
     except FileNotFoundError as ex:
         print(ex)
 else:
-    error_window.show_error(f"Can't find API file!\n({api_file_path})")
+    error_window.show_error(f"Can't find API key file!\n({api_file_path})")
 
 # new API (since 1.0.0)
 try:
