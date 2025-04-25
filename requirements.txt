@@ -3,3 +3,5 @@ setuptools
 flake8
 black
 mypy
+beautifulsoup4
+markdown

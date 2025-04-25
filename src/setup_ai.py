@@ -15,7 +15,7 @@ from openai import OpenAI
 
 from src import error_window
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 logging.debug("Invoke setup_ai module")
 

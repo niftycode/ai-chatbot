@@ -9,21 +9,24 @@ In contrast to the code in the article, the new API (> 1.0.0) is used here.
 Version: 3.0
 Python 3.12+
 Date created: November 8th, 2023
-Date modified: January 26th, 2025
+Date modified: April 25th, 2025
 """
 
 import tkinter as tk
 import logging
 import os
 
+from markdown import markdown
+from bs4 import BeautifulSoup
+from bs4.element import NavigableString
 from os.path import expanduser
 
 from src import error_window
 from src import setup_ai
 from tkinter import ttk
 
-logging.basicConfig(level=logging.DEBUG)
-# logging.basicConfig(level=logging.INFO)
+# logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 api_file_path = expanduser("~") + "/Documents/API/openai-api-file.bin"
 
@@ -56,8 +59,29 @@ class MainWindow:
         self.text_frame.grid(row=0, column=0, sticky="nsew")
 
         # Add a Text widget to the frame
-        self.text_widget = tk.Text(self.text_frame, height=15, font=("Helvetica", 16))
+        self.text_widget = tk.Text(
+            self.text_frame,
+            wrap="word",
+            bg="#f9f9f9",
+            height=15,
+            font=("Helvetica", 16),
+        )
         self.text_widget.grid(row=0, column=0, sticky="nsew")
+
+        self.text_widget.tag_configure("bold", font=("Helvetica", 16, "bold"))
+        self.text_widget.tag_configure("italic", font=("Helvetica", 16, "italic"))
+        self.text_widget.tag_configure("h1", font=("Helvetica", 18, "bold"))
+        self.text_widget.tag_configure("h2", font=("Helvetica", 16, "bold"))
+        self.text_widget.tag_configure(
+            "inlinecode", font=("Courier", 16), background="#e8e8e8"
+        )
+        self.text_widget.tag_configure(
+            "codeblock",
+            font=("Courier", 14),
+            background="#f0f0f0",
+            lmargin1=10,
+            lmargin2=10,
+        )
 
         # Create a frame for an input field
         self.input_frame = ttk.Frame(window)
@@ -122,12 +146,63 @@ class MainWindow:
             setup_ai.collect_responses(response)
             logging.debug(response)
 
-            # Show the answer in the text field
-            self.text_widget.insert("end", f"Chatbot: {response}\n")
-            self.text_widget.insert("end", "\n \n")
+            self.show_text(response)
 
         else:
             error_window.show_error(f"Can't find API file!\n({api_file_path})")
+
+    def show_text(self, md_text):
+
+        self.text_widget.insert("end", f"Chatbot:\n")
+
+        html = markdown(md_text, extensions=["fenced_code", "codehilite"])
+        soup = BeautifulSoup(html, "html.parser")
+
+        def render_element(el, current_tags=()):
+            if isinstance(el, NavigableString):
+                if el.strip() != "":
+                    self.text_widget.insert("end", el, current_tags)
+            elif el.name in ["strong", "b"]:
+                for child in el.contents:
+                    render_element(child, current_tags + ("bold",))
+            elif el.name in ["em", "i"]:
+                for child in el.contents:
+                    render_element(child, current_tags + ("italic",))
+            elif el.name == "h1":
+                for child in el.contents:
+                    render_element(child, current_tags + ("h1",))
+                self.text_widget.insert("end", "\n")
+            elif el.name == "h2":
+                for child in el.contents:
+                    render_element(child, current_tags + ("h2",))
+                self.text_widget.insert("end", "\n")
+            elif el.name == "code":
+                # Check if the code is a code block or inline code
+                if el.parent.name == "pre":
+                    self.text_widget.insert(
+                        "end", el.get_text(), current_tags + ("codeblock",)
+                    )
+                    self.text_widget.insert("end", "\n")
+                else:
+                    self.text_widget.insert(
+                        "end", el.get_text(), current_tags + ("inlinecode",)
+                    )
+            elif el.name == "pre":
+                for child in el.contents:
+                    render_element(child, current_tags)
+                self.text_widget.insert("end", "\n")
+            elif el.name == "p":
+                for child in el.contents:
+                    render_element(child, current_tags)
+                self.text_widget.insert("end", "\n\n")
+            else:
+                for child in el.contents:
+                    render_element(child, current_tags)
+
+        for elem in soup.body or soup:
+            render_element(elem)
+
+        self.text_widget.insert("end", "\n \n")
 
     def quit_program(self):
         self.window.destroy()
