@@ -115,8 +115,6 @@ class MainWindow:
             self.text_widget.insert("end", f"You: {user_input}\n")
             self.text_widget.insert("end", "\n")
 
-            # TODO: Check if API key file is available
-
             setup_ai.collect_input(user_input)
 
             # Fetch the answer
