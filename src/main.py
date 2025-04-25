@@ -14,12 +14,18 @@ Date modified: January 26th, 2025
 
 import tkinter as tk
 import logging
+import os
 
+from os.path import expanduser
+
+from src import error_window
 from src import setup_ai
 from tkinter import ttk
 
-# logging.basicConfig(level=logging.DEBUG)
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
+# logging.basicConfig(level=logging.INFO)
+
+api_file_path = expanduser("~") + "/Documents/API/openai-api-file.bin"
 
 
 class MainWindow:
@@ -57,7 +63,7 @@ class MainWindow:
         self.input_frame = ttk.Frame(window)
         self.input_frame.grid(row=1, column=0, sticky="ew")
 
-        # Add entry widget to the input_frame
+        # Add an entry widget to the input_frame
         self.input_field = ttk.Entry(
             self.input_frame, foreground="blue", background="white"
         )
@@ -79,7 +85,7 @@ class MainWindow:
         )
         self.quit_button.grid(row=0, column=2, sticky="e", padx=10, pady=10)
 
-        # Configure grid to ensure the Text widget and button_frame fill the window
+        # Configure a grid to ensure the Text widget and button_frame fill the window
         self.window.grid_rowconfigure(0, weight=1)
         self.window.grid_columnconfigure(0, weight=1)
         self.text_frame.grid_rowconfigure(0, weight=1)
@@ -89,27 +95,41 @@ class MainWindow:
 
     def send_message(self) -> None:
         """
-        Get input from user, fetch answers and show them in a text field.
+        Get input from the user, fetch answers and show them in a text field.
         """
 
-        # Get input and delete the input field
-        user_input = self.input_field.get()
-        self.input_field.delete(0, "end")
+        # Check if the api file is available
+        if os.path.isfile(api_file_path):
+            logging.debug(f"The file '{api_file_path}' exists and is readable.")
+            try:
+                with open(api_file_path, encoding="utf-8") as binary_file:
+                    binary_file.read()
+            except FileNotFoundError as ex:
+                print(ex)
 
-        # Show the input in the text field
-        self.text_widget.insert("end", f"You: {user_input}\n")
-        self.text_widget.insert("end", "\n")
-        setup_ai.collect_input(user_input)
+            # Get input and delete the input field
+            user_input = self.input_field.get()
+            self.input_field.delete(0, "end")
 
-        # Fetch the answer
-        response = setup_ai.get_completion_from_messages(setup_ai.context)
-        setup_ai.collect_responses(response)
+            # Show the input in the text field
+            self.text_widget.insert("end", f"You: {user_input}\n")
+            self.text_widget.insert("end", "\n")
 
-        logging.debug(response)
+            # TODO: Check if API key file is available
 
-        # Show the answer in the text field
-        self.text_widget.insert("end", f"Chatbot: {response}\n")
-        self.text_widget.insert("end", "\n \n")
+            setup_ai.collect_input(user_input)
+
+            # Fetch the answer
+            response = setup_ai.get_completion_from_messages(setup_ai.context)
+            setup_ai.collect_responses(response)
+            logging.debug(response)
+
+            # Show the answer in the text field
+            self.text_widget.insert("end", f"Chatbot: {response}\n")
+            self.text_widget.insert("end", "\n \n")
+
+        else:
+            error_window.show_error(f"Can't find API file!\n({api_file_path})")
 
     def quit_program(self):
         self.window.destroy()
