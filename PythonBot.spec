@@ -41,7 +41,7 @@ app = BUNDLE(
     exe,
     name='PythonBot.app',
     icon='assets/app-icon.icns',
-    bundle_identifier='de.niftycode',
+    bundle_identifier='de.nicefield.PythonBot',
     info_plist={
         'NSPrincipalClass': 'NSApplication',
         'NSAppleScriptEnabled': False,
@@ -49,10 +49,12 @@ app = BUNDLE(
             {
                 'CFBundleTypeName': 'PythonBot',
                 'CFBundleTypeIconFile': 'app-icon.icns',
-                'LSItemContentTypes': ['com.niftycode.pythonbot'],
+                'LSItemContentTypes': ['de.nicefield.PythonBot'],
                 'LSHandlerRank': 'Owner'
             }
         ],
-        'CFBundleShortVersionString': '0.1.3'
+        'CFBundleIdentifier': 'de.nicefield.PythonBot',
+        'CFBundleShortVersionString': '0.1.3',
+        'CFBundleGetInfoString': 'Bodo Schönfeld © 2025'
     },
 )

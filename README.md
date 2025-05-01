@@ -65,3 +65,5 @@ This repository contains a spec file that allows you to create an executable wit
 pip3 install pyinstaller
 ```
 
+The spec file should be adapted to your needs. For example, the value for "CFBundleIdentifier" should be changed to your identifier.
+

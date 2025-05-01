@@ -21,9 +21,14 @@ from bs4 import BeautifulSoup
 from bs4.element import NavigableString
 from os.path import expanduser
 
+# from tkinter import messagebox
+from tkinter import ttk
+
 from src import error_window
 from src import setup_ai
-from tkinter import ttk
+
+# from src import about_window
+
 
 # logging.basicConfig(level=logging.DEBUG)
 logging.basicConfig(level=logging.INFO)
@@ -36,6 +41,15 @@ class MainWindow:
         self.window = app_window
         self.window.title("AI Chatbot (Python)")
         self.window.lift()
+
+        # Customize macOS menu bar (optional)
+        menu_bar = tk.Menu(self.window)
+        self.window.config(menu=menu_bar)
+
+        # Add "File" with "Quit" button to menu bar.
+        file_menu = tk.Menu(menu_bar, tearoff=0)
+        menu_bar.add_cascade(label="File", menu=file_menu)
+        file_menu.add_command(label="Quit", command=self.window.quit)
 
         window_width = 800
         window_height = 600
@@ -153,7 +167,7 @@ class MainWindow:
 
     def show_text(self, md_text):
 
-        self.text_widget.insert("end", f"Chatbot:\n")
+        self.text_widget.insert("end", "Chatbot:\n")
 
         html = markdown(md_text, extensions=["fenced_code", "codehilite"])
         soup = BeautifulSoup(html, "html.parser")
@@ -203,6 +217,10 @@ class MainWindow:
             render_element(elem)
 
         self.text_widget.insert("end", "\n \n")
+
+    # def show_custom_about(self):
+    #     about_message = "PythonBot\nVersion 0.1.3\n2025 Bodo Schönfeld"
+    #     messagebox.showinfo("About", about_message)
 
     def quit_program(self):
         self.window.destroy()
