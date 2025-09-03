@@ -37,6 +37,26 @@ api_file_path = expanduser("~") + "/Documents/API/openai-api-file.bin"
 
 
 class MainWindow:
+    """
+    Main application window for the AI Chatbot.
+
+    Provides the main GUI setup and controls for interacting with the AI chatbot.
+    This class initializes the application window, configures menu bars, text
+    inputs, and buttons, and manages user interaction through input fields and
+    the output display area. It also centers the main window on the screen and
+    styles various widgets for a better user experience.
+
+    Attributes:
+        window (tk.Tk): Main application window instance.
+        text_frame (ttk.Frame): Frame containing the text display widget.
+        text_widget (tk.Text): Text widget for displaying chat history and chatbot responses.
+        input_frame (ttk.Frame): Frame containing the user input field.
+        input_field (ttk.Entry): Entry widget for user input.
+        button_frame (ttk.Frame): Frame containing buttons like "Chat" and "Quit".
+        chat_button (ttk.Button): Button to submit user input and fetch chatbot response.
+        quit_button (ttk.Button): Button to quit the application.
+    """
+
     def __init__(self, app_window):
         self.window = app_window
         self.window.title("AI Chatbot (Python)")
@@ -133,7 +153,7 @@ class MainWindow:
 
     def send_message(self) -> None:
         """
-        Get input from the user, fetch answers and show them in a text field.
+        Get input from the user, fetch answers, and show them in a text field.
         """
 
         # Check if the api file is available
@@ -166,7 +186,19 @@ class MainWindow:
             error_window.show_error(f"Can't find API file!\n({api_file_path})")
 
     def show_text(self, md_text):
+        """
+        Renders and displays Markdown text in a text widget by converting it to styled text.
 
+        This method processes the provided Markdown text, converts it to styled HTML using
+        markdown processing libraries, and then parses the HTML to render the styled content
+        into a text widget. Each HTML element in the Markdown is translated to a corresponding
+        style or formatting in the text widget (e.g., headings, bold, italic, code blocks).
+        The method ensures that Markdown syntax like fenced codes and highlighted code are
+        properly processed and displayed.
+
+        Args:
+            md_text (str): Markdown-formatted string that needs to be rendered and displayed.
+        """
         self.text_widget.insert("end", "Chatbot:\n")
 
         html = markdown(md_text, extensions=["fenced_code", "codehilite"])
@@ -223,9 +255,30 @@ class MainWindow:
     #     messagebox.showinfo("About", about_message)
 
     def quit_program(self):
+        """
+        Destroys the main application window.
+
+        This method is used to terminate the application by closing the primary
+        window. It leverages the `destroy` method of the `tkinter` library to
+        shut down the interface and safely exit the program.
+
+        Raises:
+            None
+        """
         self.window.destroy()
 
     def mainloop(self):
+        """
+        Executes the main event loop for the graphical user interface (GUI).
+
+        This method is responsible for starting the tkinter event loop, which
+        continually listens for and processes user input such as mouse clicks
+        or keypresses within the application window. The loop runs until the
+        application window is closed.
+
+        Returns:
+            None
+        """
         self.window.mainloop()
 
 
