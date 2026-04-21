@@ -1,7 +1,6 @@
 # ai-chatbot
 
-![Static Badge](https://img.shields.io/badge/python-3.12-blue)
-![Static Badge](https://img.shields.io/badge/python-3.13-blue)
+![](img/python-3.12-blue.svg)
 ![GitHub License](https://img.shields.io/github/license/niftycode/ai-chatbot)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/niftycode/ai-chatbot)
