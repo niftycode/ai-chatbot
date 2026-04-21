@@ -13,7 +13,6 @@ Date modified: April 21st, 2026
 """
 
 import tkinter as tk
-import logging
 import os
 import threading
 
@@ -30,9 +29,6 @@ from src import setup_ai
 
 # from src import about_window
 
-
-# logging.basicConfig(level=logging.DEBUG)
-logging.basicConfig(level=logging.INFO)
 
 api_file_path = expanduser("~") + "/Documents/API/openai-api-file.bin"
 
@@ -100,9 +96,9 @@ class MainWindow:
             bg="#f9f9f9",
             height=15,
             font=("Helvetica", 16),
-            spacing1=4,  # Distance in front of the block
+            spacing1=5,  # Distance in front of the block
             spacing2=2,  # Line spacing within the block
-            spacing3=4  # Distance after the block
+            spacing3=5,  # Distance after the block
         )
         self.text_widget.grid(row=0, column=0, sticky="nsew")
 
@@ -120,9 +116,9 @@ class MainWindow:
             background="#f0f0f0",
             lmargin1=10,
             lmargin2=10,
-            spacing1=4,  # Distance in front of the block
+            spacing1=5,  # Distance in front of the block
             spacing2=2,  # Line spacing within the block
-            spacing3=4  # Distance after the block
+            spacing3=5,  # Distance after the block
         )
         self.text_widget.tag_configure("user_text", foreground="green")
 
@@ -167,7 +163,6 @@ class MainWindow:
 
         # Check if the api file is available
         if os.path.isfile(api_file_path):
-            logging.debug(f"The file '{api_file_path}' exists and is readable.")
             try:
                 with open(api_file_path, encoding="utf-8") as binary_file:
                     binary_file.read()
@@ -206,15 +201,13 @@ class MainWindow:
             # Fetch the answer (blocking call)
             response = setup_ai.get_completion_from_messages(context)
             setup_ai.collect_responses(response)
-            logging.debug(response)
 
             # Update the text widget in the main thread
             self.window.after(0, lambda: self.show_text(response))
-        except Exception as e:
-            logging.error(f"Error fetching AI response: {e}")
+        except Exception as ex:
             self.window.after(
                 0,
-                lambda: error_window.show_error(f"Error fetching AI response: {e}"),
+                lambda: error_window.show_error(f"Error fetching AI response: {ex}"),
             )
         finally:
             # Re-enable the chat button in the main thread
@@ -295,7 +288,7 @@ class MainWindow:
         self.text_widget.insert("end", "\n \n")
 
     # def show_custom_about(self):
-    #     about_message = "PythonBot\nVersion 0.1.3\n2025 Bodo Schönfeld"
+    #     about_message = "PythonBot\nVersion 0.1.5\n2025-2026 Bodo Schönfeld"
     #     messagebox.showinfo("About", about_message)
 
     def copy_to_clipboard(self, text):

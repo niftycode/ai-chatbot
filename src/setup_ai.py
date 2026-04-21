@@ -7,7 +7,6 @@ Date created: October 18th, 2023
 Date modified: March 4th, 2025
 """
 
-import logging
 import os
 
 from os.path import expanduser
@@ -15,14 +14,10 @@ from openai import OpenAI
 
 from src import error_window
 
-logging.basicConfig(level=logging.INFO)
-
-logging.debug("Invoke setup_ai module")
 
 api_file_path = expanduser("~") + "/Documents/API/openai-api-file.bin"
 
 if os.path.isfile(api_file_path):
-    logging.debug(f"The file '{api_file_path}' exists and is readable.")
     try:
         with open(api_file_path, encoding="utf-8") as binary_file:
             api_key = binary_file.read()
@@ -71,5 +66,4 @@ def get_completion_from_messages(messages, model="gpt-5.4", temperature=0):
         model=model, messages=messages, temperature=temperature
     )
 
-    logging.debug(response.choices[0].message.content)
     return response.choices[0].message.content

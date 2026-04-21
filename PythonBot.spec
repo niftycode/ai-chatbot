@@ -37,8 +37,17 @@ exe = EXE(
     entitlements_file=None,
     icon=['assets/app-icon.icns'],
 )
-app = BUNDLE(
+coll = COLLECT(
     exe,
+    a.binaries,
+    a.datas,
+    strip=False,
+    upx=True,
+    upx_exclude=[],
+    name='ai-chatbot',
+)
+app = BUNDLE(
+    coll,
     name='PythonBot.app',
     icon='assets/app-icon.icns',
     bundle_identifier='de.nicefield.PythonBot',
@@ -50,11 +59,11 @@ app = BUNDLE(
                 'CFBundleTypeName': 'PythonBot',
                 'CFBundleTypeIconFile': 'app-icon.icns',
                 'LSItemContentTypes': ['de.nicefield.PythonBot'],
-                'LSHandlerRank': 'Owner'
+                'LSHandlerRank': 'Owner',
             }
         ],
         'CFBundleIdentifier': 'de.nicefield.PythonBot',
-        'CFBundleShortVersionString': '0.1.4',
+        'CFBundleShortVersionString': '0.1.5',
         'CFBundleGetInfoString': 'Bodo Schönfeld © 2025-2026'
     },
 )
