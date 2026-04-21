@@ -1,7 +1,9 @@
-openai
+wheel
+build
 setuptools
 flake8
 black
 mypy
+openai
 beautifulsoup4
 markdown
