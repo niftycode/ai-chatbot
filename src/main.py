@@ -9,12 +9,13 @@ In contrast to the code in the article, the new API (> 1.0.0) is used here.
 Version: 3.0
 Python 3.12+
 Date created: November 8th, 2023
-Date modified: April 25th, 2025
+Date modified: April 21st, 2026
 """
 
 import tkinter as tk
 import logging
 import os
+import threading
 
 from markdown import markdown
 from bs4 import BeautifulSoup
@@ -71,8 +72,8 @@ class MainWindow:
         menu_bar.add_cascade(label="File", menu=file_menu)
         file_menu.add_command(label="Quit", command=self.window.quit)
 
-        window_width = 800
-        window_height = 600
+        window_width = 1000
+        window_height = 800
 
         # Get the screen dimension
         screen_width = self.window.winfo_screenwidth()
@@ -99,6 +100,9 @@ class MainWindow:
             bg="#f9f9f9",
             height=15,
             font=("Helvetica", 16),
+            spacing1=4,  # Distance in front of the block
+            spacing2=2,  # Line spacing within the block
+            spacing3=4  # Distance after the block
         )
         self.text_widget.grid(row=0, column=0, sticky="nsew")
 
@@ -111,14 +115,19 @@ class MainWindow:
         )
         self.text_widget.tag_configure(
             "codeblock",
-            font=("Courier", 14),
+            font=("Courier", 16),
+            foreground="purple",
             background="#f0f0f0",
             lmargin1=10,
             lmargin2=10,
+            spacing1=4,  # Distance in front of the block
+            spacing2=2,  # Line spacing within the block
+            spacing3=4  # Distance after the block
         )
+        self.text_widget.tag_configure("user_text", foreground="green")
 
         # Create a frame for an input field
-        self.input_frame = ttk.Frame(window)
+        self.input_frame = ttk.Frame(self.window)
         self.input_frame.grid(row=1, column=0, sticky="ew")
 
         # Add an entry widget to the input_frame
@@ -129,7 +138,7 @@ class MainWindow:
         self.input_field.grid(row=0, column=0, sticky="ew", padx=10, pady=10)
 
         # Create a frame for buttons
-        self.button_frame = ttk.Frame(window)
+        self.button_frame = ttk.Frame(self.window)
         self.button_frame.grid(row=2, column=0, sticky="ew")
 
         # Add buttons to the button_frame
@@ -167,30 +176,56 @@ class MainWindow:
 
             # Get input and delete the input field
             user_input = self.input_field.get()
+            if not user_input.strip():
+                return
             self.input_field.delete(0, "end")
 
             # Show the input in the text field
-            self.text_widget.insert("end", f"You: {user_input}\n")
+            self.text_widget.insert("end", f"You: {user_input}\n", "user_text")
             self.text_widget.insert("end", "\n")
 
             setup_ai.collect_input(user_input)
 
-            # Fetch the answer
-            response = setup_ai.get_completion_from_messages(setup_ai.context)
-            setup_ai.collect_responses(response)
-            logging.debug(response)
+            # Disable chat button to prevent multiple simultaneous requests
+            self.chat_button.config(state="disabled")
 
-            self.show_text(response)
+            # Start the API call in a separate thread
+            api_thread = threading.Thread(
+                target=self.fetch_ai_response, args=(setup_ai.context,)
+            )
+            api_thread.start()
 
         else:
             error_window.show_error(f"Can't find API file!\n({api_file_path})")
+
+    def fetch_ai_response(self, context) -> None:
+        """
+        Fetch completion from AI in a separate thread and update the UI.
+        """
+        try:
+            # Fetch the answer (blocking call)
+            response = setup_ai.get_completion_from_messages(context)
+            setup_ai.collect_responses(response)
+            logging.debug(response)
+
+            # Update the text widget in the main thread
+            self.window.after(0, lambda: self.show_text(response))
+        except Exception as e:
+            logging.error(f"Error fetching AI response: {e}")
+            self.window.after(
+                0,
+                lambda: error_window.show_error(f"Error fetching AI response: {e}"),
+            )
+        finally:
+            # Re-enable the chat button in the main thread
+            self.window.after(0, lambda: self.chat_button.config(state="normal"))
 
     def show_text(self, md_text):
         """
         Renders and displays Markdown text in a text widget by converting it to styled text.
 
         This method processes the provided Markdown text, converts it to styled HTML using
-        markdown processing libraries, and then parses the HTML to render the styled content
+        Markdown processing libraries, and then parses the HTML to render the styled content
         into a text widget. Each HTML element in the Markdown is translated to a corresponding
         style or formatting in the text widget (e.g., headings, bold, italic, code blocks).
         The method ensures that Markdown syntax like fenced codes and highlighted code are
@@ -225,9 +260,18 @@ class MainWindow:
             elif el.name == "code":
                 # Check if the code is a code block or inline code
                 if el.parent.name == "pre":
+                    code_text = el.get_text()
                     self.text_widget.insert(
-                        "end", el.get_text(), current_tags + ("codeblock",)
+                        "end", code_text, current_tags + ("codeblock",)
                     )
+                    # Add a copy button for the code block
+                    copy_button = ttk.Button(
+                        self.text_widget,
+                        text="Copy",
+                        width=10,
+                        command=lambda t=code_text: self.copy_to_clipboard(t),
+                    )
+                    self.text_widget.window_create("end", window=copy_button)
                     self.text_widget.insert("end", "\n")
                 else:
                     self.text_widget.insert(
@@ -253,6 +297,16 @@ class MainWindow:
     # def show_custom_about(self):
     #     about_message = "PythonBot\nVersion 0.1.3\n2025 Bodo Schönfeld"
     #     messagebox.showinfo("About", about_message)
+
+    def copy_to_clipboard(self, text):
+        """
+        Copies the given text to the system clipboard.
+
+        Args:
+            text (str): The text to be copied.
+        """
+        self.window.clipboard_clear()
+        self.window.clipboard_append(text)
 
     def quit_program(self):
         """

@@ -54,7 +54,7 @@ app = BUNDLE(
             }
         ],
         'CFBundleIdentifier': 'de.nicefield.PythonBot',
-        'CFBundleShortVersionString': '0.1.3',
-        'CFBundleGetInfoString': 'Bodo Schönfeld © 2025'
+        'CFBundleShortVersionString': '0.1.4',
+        'CFBundleGetInfoString': 'Bodo Schönfeld © 2025-2026'
     },
 )

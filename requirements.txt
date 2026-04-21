@@ -1,3 +1,4 @@
+pyinstaller
 wheel
 build
 setuptools

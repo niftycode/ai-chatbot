@@ -66,9 +66,7 @@ def collect_responses(response):
     context.append({"role": "assistant", "content": f"{response}"})
 
 
-# model="gpt-3.5-turbo"
-# model="gpt-4o"
-def get_completion_from_messages(messages, model="gpt-4o", temperature=0):
+def get_completion_from_messages(messages, model="gpt-5.4", temperature=0):
     response = client.chat.completions.create(
         model=model, messages=messages, temperature=temperature
     )
