@@ -58,6 +58,8 @@ This deviates from the suggestion shown [on GitHub](https://github.com/openai/op
 
 ## Additional Notes
 
+### pyinstaller
+
 This repository contains a spec file that allows you to create an executable with [PyInstaller](https://pyinstaller.org/en/stable/). This requires `pyinstaller` to be installed:
 
 ```Bash
@@ -66,3 +68,6 @@ pip3 install pyinstaller
 
 The spec file should be adapted to your needs. For example, the value for "CFBundleIdentifier" should be changed to your identifier.
 
+### OpenAI GPT version
+
+This project uses GPT 5.4. This model is hard-coded.
